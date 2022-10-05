@@ -21,7 +21,7 @@ var path = require("path")
 
 
 app.get("/", (req, res)=>{
-    let resText =" <h2>I declare that that this test is my own work in accordance with Seneca Academic Policy: No part of this teast has been copied manually or electronically from any other source.<h2/><br><h2>Name:Tianchen Zhang<br>Student Number:101569218</h2>"
+    let resText =" <h2>I declare that that this test is my own work in accordance with seneca academic policy: No part of this teast has been copied manually or electronically from any other source.<h2/><br><h2>Name:Tianchen Zhang<br>Student Number:101569218</h2>"
     resText += "<a href='/test1'> Go to Test1 </a>";
     res.send(resText);
 });
