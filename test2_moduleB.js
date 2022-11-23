@@ -20,22 +20,23 @@ exports.prepare=function() {
 })
 }
 
-exports.getCPA=function() {
+exports.getBSD=function() {
     return new Promise(function(resolve, reject){
         if (students.length == 0) {
             reject('no results returned');
         }
         else {
-            const CPAStudents = [];
+            const BSDStudents = [];
             for (let i = 0; i < students.length; i++) {
-                if (students[i].program == "CPA") {
-                    CPAStudents.push(students[i]);
+                if (students[i].program == "BSD") {
+                    BSDStudents.push(students[i]);
                 }
             }
-            resolve(CPAStudents);
+            resolve(BSDStudents);
         }
     });
 }
+
 
 
 exports.highGPA=function() {
@@ -53,6 +54,17 @@ exports.highGPA=function() {
                 }
             }
             resolve(maxStudent);
+        }
+    });
+}
+
+exports.allStudents=function() {    
+    return new Promise(function(resolve, reject){
+        if (students.length == 0) {
+            reject('no results returned');
+        }
+        else {
+            resolve(students); 
         }
     });
 }
