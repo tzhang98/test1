@@ -20,11 +20,7 @@ var path = require("path")
 
 
 
-app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'
 
-}));
-
-app.set('view engine', '.hbs');
 
 
 
