@@ -1,16 +1,17 @@
 /*********************************************************************************
-* BTI325 – test3
+* BTI325 – test4
 * I declare that this assignment is my own work in accordance with Seneca Academic Policy.
 * No part of this assignment has been copied manually or electronically from any other source
 * (including web sites) or distributed to other students.
 *
-* Name: ___TIANCHEN ZHANG________ Student ID: ___101569218_______ Date: __2022/11/23_______
+* Name: ___TIANCHEN ZHANG________ Student ID: ___101569218_______ Date: __2022/12/9_______
 *
 * Online (Cyclic) URL:
 * __https://distinct-gold-bull.cyclic.app
 *
 ********************************************************************************/ 
-var test2_moduleB= require("./test2_moduleB.js");
+//var test2_moduleB= require("./test2_moduleB.js");
+var final= require("./final.js");
 var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var exphbs = require("express-handlebars");
@@ -27,61 +28,58 @@ app.set('view engine', '.hbs');
 
 
 
+
+
+
+//Home route (GET, “/”)
+//Responds with file: home.html (details below).
+
 app.get("/", (req, res)=>{
-    res.render("home");
-});
+    res.sendFile(path.join(__dirname,"/finalViews/home.html"));
+}
+);
 
-app.get("/students", (req, res)=>{
-    res.render("students");
-});
-
-app.get("/allStudents", (req, res)=>{
-    
-        test2_moduleB.allStudents().then((data)=>{
-            res.render("students", {data: data});
-        }).catch((err)=>{
-            res.render("students", {message: err});
-        });
-    
-});
+app.get("/register", (req, res)=>{
+    res.sendFile(path.join(__dirname,"/finalViews/register.html"));
+}
+);
 
 
-app.get("/BSD", (req, res)=>{
-    
-        test2_moduleB.getBSD().then((data)=>{
-            res.render("students", {data: data});
-        }).catch((err)=>{
-            res.render("students", {message: err});
-        });
-    
-});
 
 
-// app.get("/highGPA",(req,res)=>{
-//         test2_moduleB.highGPA().then((data)=>{
-//             var resText = "<h2>Highest GPA</h2>"
-//             resText += "<p>Student Id: " + data.studId + "</p >"
-//             resText += "<p>Name: " + data.name + "</p >"
-//             resText += "<p>Program: " + data.program + "</p >"
-//             resText += "<p>GPA: " + data.gpa + "</p >"
-//             res.send(resText)
-//         }).catch((err)=>{
-//             res.json(err);
-//         })
-    
-// }
-// );
+app.post("/register", (req, res)=>{
+    final.register(req.body).then((user)=>{
+        let resText ="<h2>"+user.email+" registered successfully</h2> <br> <a href='/'> Go Home </a>";
+        res.send(resText);
+        let newuser = new final.User(user);
+        newuser.save();
+    }).catch((err)=>{
+        res.send(err);
+    });
+}
+);
+
+app.get("/signIn", (req, res)=>{
+    res.sendFile(path.join(__dirname,"/finalViews/signIn.html"));
+}
+);
 
 
-app.get("/highGPA", (req, res)=>{
-    
-        test2_moduleB.highGPA().then((data)=>{
-            res.render("student", {data: data});
-        }).catch((err)=>{
-            res.render("student", {message: err});
-        });
-    
-});
+
+
+app.post("/signIn", (req, res)=>{
+    final.signIn(req.body).then((user)=>{
+        let resText ="<h2>"+user.email+" signin successfully</h2> <br> <a href='/'> Go Home </a>";
+        res.send(resText);
+    }).catch((err)=>{
+        res.send(err);
+    });
+}
+);
+
+
+
+
 
 
 
@@ -90,17 +88,19 @@ app.use(function(req,res){
 }); 
 
    
-    test2_moduleB.prepare().then(()=>{
-        app.listen(HTTP_PORT,onHttpStart);
+
+
+    // On server.js, make sure this function startDB() successfully resolves, then start the
+    // server (app.listen()). Otherwise, catch the error and display the error.
+
+
+    final.startDB().then(()=>{
+        app.listen(HTTP_PORT, function(){
+        console.log("app listening on: " + HTTP_PORT);
+        
+        });
     }).catch((err)=>{
         console.log(err);
     });
-
-    function onHttpStart() {
-        console.log("Express http server listening on: " + HTTP_PORT);
-    }
-
-
-
 
 
